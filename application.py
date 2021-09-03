@@ -1,5 +1,5 @@
-from flask import Flask, render_template, jsonify
-
+from flask import Flask, render_template, request, jsonify
+import requests
 # print a nice greeting.
 def say_hello(username = "World"):
     return '<p>Hello %s!</p>\n' % username
@@ -16,7 +16,6 @@ footer_text = '</body>\n</html>'
 
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
-
     
 @application.route("/", methods=['POST', 'GET'])
 def index():
@@ -28,6 +27,11 @@ def users():
     data = {'users': [{'name': 'Jerry', 'age': 21, 'email': 'jerry@gmail.com'}, 
     {'name': 'Jerry', 'age': 21, 'email': 'jerry@gmail.com'}]}
     return data
+    
+@application.route('/holidays', methods=['GET'])
+def holidays():
+    data = requests.get('https://date.nager.at/api/v2/publicholidays/2021/US')
+    return data.text
 
 @application.route('/new', methods=['POST'])
 def new():
@@ -43,4 +47,4 @@ if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
     application.debug = True
-    application.run(host='0.0.0.0')
+    application.run(host='0.0.0.0', port=8000)
