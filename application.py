@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, url_for, request, redirect, jsonify
 
 # print a nice greeting.
 def say_hello(username = "World"):
@@ -17,12 +17,27 @@ footer_text = '</body>\n</html>'
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 
-@application.route("/")
-def hello():
+    
+@application.route("/", methods=['POST', 'GET'])
+def index():
     """Return a friendly HTTP greeting."""
-    print("I am inside hello world")
-    return "Continuous Delivery Demo"
+    return render_template('index.html')
 
+@application.route('/users', methods=['GET'])
+def users():
+    data = {'users': [{'name': 'Jerry', 'age': 21, 'email': 'jerry@gmail.com'}, 
+    {'name': 'Jerry', 'age': 21, 'email': 'jerry@gmail.com'}]}
+    return data
+
+@application.route('/new', methods=['POST'])
+def new():
+    data = request.json
+    return {
+        "message": "Success",
+        "status": 200,
+        "data": data
+    }
+  
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
