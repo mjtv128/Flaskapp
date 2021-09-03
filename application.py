@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify
+from flask import Flask, render_template, jsonify
 
 # print a nice greeting.
 def say_hello(username = "World"):
